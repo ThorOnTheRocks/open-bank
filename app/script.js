@@ -1,8 +1,6 @@
 'use strict';
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// BANKIST APP
+// Openbank APP
 
 // Data
 const account1 = {
@@ -62,17 +60,20 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 // Display List Movements
-const displayMovements = (movements) => {
+const displayMovements = (movements, sort = false) => {
   // Clearing container movements
   containerMovements.innerHTML = '';
 
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
   // Dinamically fill container movements
-  movements.forEach((mov, i) => {
+  movs.forEach((mov, i) => {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `<div class="movements__row">
-      <div class="movements__type movements__type--deposit">${i + 1} ${type}</div>
-      <div class="movements__value">${mov}</div>
-    </div>`;
+    <div class="movements__type movements__type--${type}">${i + 1
+      } ${type}</div>
+    <div class="movements__value">${mov}€</div>
+  </div>`;
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 };
@@ -170,6 +171,31 @@ btnTransfer.addEventListener('click', (e) => {
   }
 });
 
+btnLoan.addEventListener('click', (e) => {
+  e.preventDefault();
+
+  const amount = Number(inputLoanAmount.value);
+
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+
+    //Add movement
+    currentAccount.movements.push(amount);
+
+    //Update UI
+    updateUI(currentAccount);
+  }
+  inputLoanAmount.value = '';
+});
+
+let sorted = false;
+btnSort.addEventListener('click', (e) => {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
+
+})
+
+
 btnClose.addEventListener('click', (e) => {
   e.preventDefault();
 
@@ -189,5 +215,4 @@ btnClose.addEventListener('click', (e) => {
   }
 
   inputCloseUsername.value = inputClosePin.value = '';
-})
-
+});
