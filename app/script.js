@@ -6,7 +6,7 @@
 
 // Data
 const account1 = {
-  owner: 'Jonas Schmedtmann',
+  owner: 'Gianluca Galota',
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
   interestRate: 1.2, // %
   pin: 1111,
@@ -169,4 +169,25 @@ btnTransfer.addEventListener('click', (e) => {
     updateUI(currentAccount);
   }
 });
+
+btnClose.addEventListener('click', (e) => {
+  e.preventDefault();
+
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    // Calculate index account to close
+    const index = accounts.
+      findIndex(acc => acc.username === currentAccount.username);
+
+    // Delete Account
+    accounts.splice(index, 1)
+
+    // Hide UI
+    containerApp.style.opacity = 0;
+  }
+
+  inputCloseUsername.value = inputClosePin.value = '';
+})
 
