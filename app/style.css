@@ -289,3 +289,19 @@ h2 {
 .timer {
   font-weight: 600;
 }
+
+.footer {
+  margin-top: 5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-paragraph {
+  font-size: 1.5rem;
+}
+
+.link-profile{
+  text-decoration: none;
+  color: #39b385;
+
+}
